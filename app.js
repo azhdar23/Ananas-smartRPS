@@ -1,6 +1,7 @@
+const provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.binance.org:8545');
 
 const contractAddress = "0x3Fd147B6E483f97f8f1B975B6b490D718636E9a1";
-const contractABI = [
+    const abi = [
 	{
 		"inputs": [
 			{
@@ -58,53 +59,36 @@ const contractABI = [
 	}
 ];
 
-const provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.binance.org:8545');
+const contract = new ethers.Contract(contractAddress, abi, provider.getSigner());
 
-// для локального ганаш
-// const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-let signer;
-let contractInstance;
-
-async function init() {
-  await window.ethereum.enable();
-  signer = provider.getSigner();
-  contractInstance = new ethers.Contract(contractAddress, contractABI, signer);
+async function playGame() {
+  const choice = document.getElementById('choice').value;
+  await contract.play(choice);
+  updateGameHistory();
 }
 
-
-async function playGame(choice) {
-  try {
-    // Enable Metamask
-    await window.ethereum.enable();
-
-    const signer = provider.getSigner();
-
-    const rpsContract = new ethers.Contract(contractAddress, contractABI, signer);
-
-    // Call smart contract's `play` function
-    const txResponse = await rpsContract.play(choice);
-
-    console.log(`Transaction hash: ${txResponse.hash}`);
-
-  } catch (error) {
-      console.error(error);
+async function updateGameHistory() {
+  const gameCount = await contract.getGameCount();
+  const gameHistoryElement = document.getElementById('game-history');
+  gameHistoryElement.innerHTML = '';
+  for (let i = 0; i < gameCount; i++) {
+    const game = await contract.gameHistory(i);
+    const player = game.player;
+    const choice = getChoiceName(game.choice);
+    const timestamp = new Date(game.timestamp * 1000).toLocaleString();
+    const gameElement = document.createElement('div');
+    gameElement.innerText = `${player} chose ${choice} at ${timestamp}`;
+    gameHistoryElement.appendChild(gameElement);
   }
 }
 
-async function getGameCount() {
-  try {
-     // Enable Metamask
-     await window.ethereum.enable();
-
-     const rpsContract = new ethers.Contract(contractAddress, contractABI, provider);
-
-     // Call smartcontract's `getGameCount` view function.
-     const count = await rpsContract.getGameCount();
-
-     console.log(`Number of games played: ${count.toNumber()}`);
-
-   } catch (error) {
-       console.error(error);
-   }
+function getChoiceName(choice) {
+  if (choice == 0) {
+    return 'Rock';
+  } else if (choice == 1) {
+    return 'Paper';
+  } else if (choice == 2) {
+    return 'Scissors';
+  }
 }
+
