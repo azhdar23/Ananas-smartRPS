@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock Paper Scissors Game</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
+  <script src="./script.js"></script>
+</head>
+<body>
+  <h1>Rock Paper Scissors Game</h1>
+  <div>
+    <label for="choice">Choose your move:</label>
+    <select id="choice">
+      <option value="0">Rock</option>
+      <option value="1">Paper</option>
+      <option value="2">Scissors</option>
+    </select>
+    <button onclick="playGame()">Play Game</button>
+  </div>
+  <h2>Game History</h2>
+  <div id="game-history"></div>
+</body>
+</html>
