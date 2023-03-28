@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANANAS Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <h1>Rock Paper Scissors by ANANAS</h1>
+    <button onclick="play(0)">
+        <img src="rock.png" alt="Rock">
+      </button>
+    <button onclick="play(1)">
+        <img src="paper.png" alt="Paper">
+      </button>
+    <button onclick="play(2)">
+        <img src="scissors.png" alt="Scissors">
+      </button>
+    <h2>Game History</h2>
+    <ul id="game-history"></ul>
+    <script>
+        window.addEventListener('load', initialize);
+    </script>
+</body>
+</html>
